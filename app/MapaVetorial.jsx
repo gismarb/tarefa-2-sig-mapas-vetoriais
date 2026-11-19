@@ -11,7 +11,15 @@ const CAMINHO_MALHA = "/municipios-regiao-limeira.geojson";
 const ESTILO_MUNICIPIOS = {
   color: "#0369a1",
   weight: 2,
+  fillColor: "#0369a1",
   fillOpacity: 0.2,
+};
+
+const ESTILO_SELECIONADO = {
+  color: "#9a3412",
+  weight: 3,
+  fillColor: "#f97316",
+  fillOpacity: 0.45,
 };
 
 function vincularPopupMunicipio(feicao, camadaMunicipio) {
@@ -32,7 +40,10 @@ function vincularPopupMunicipio(feicao, camadaMunicipio) {
   camadaMunicipio.bindPopup(conteudo);
 }
 
-export default function MapaVetorial({ aoSelecionarMunicipio }) {
+export default function MapaVetorial({
+  aoSelecionarMunicipio,
+  codigoSelecionado,
+}) {
   const [camada, setCamada] = useState(null);
   const [erro, setErro] = useState(null);
 
@@ -91,7 +102,11 @@ export default function MapaVetorial({ aoSelecionarMunicipio }) {
       />
       <GeoJSON
         data={camada.dados}
-        style={ESTILO_MUNICIPIOS}
+        style={(feicao) =>
+          feicao.properties.CD_MUN === codigoSelecionado
+          ? ESTILO_SELECIONADO
+          : ESTILO_MUNICIPIOS
+        }
         onEachFeature={(feicao, camadaMunicipio) => {
           vincularPopupMunicipio(feicao, camadaMunicipio);
 

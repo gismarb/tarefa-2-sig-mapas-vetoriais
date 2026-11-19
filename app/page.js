@@ -15,7 +15,10 @@ export default function Home() {
     <main style={{ maxWidth: 1024, margin: "0 auto", padding: "1rem" }}>
       <h1>Municípios da região de Limeira</h1>
       <p>Limites municipais do IBGE · Malha Municipal 2024</p>
-      <MapaVetorial aoSelecionarMunicipio={setMunicipio} />
+      <MapaVetorial
+        aoSelecionarMunicipio={setMunicipio}
+        codigoSelecionado={municipio?.CD_MUN}
+      />
 
     <section aria-labelledby="titulo-atributos">
       <h2 id="titulo-atributos">Tabela de atributos</h2>
