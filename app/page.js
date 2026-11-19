@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { formatarArea } from "./formatarArea";
+import styles from "./page.module.css";
 
 const MapaVetorial = dynamic(() => import("./MapaVetorial"), {
   ssr: false,
@@ -12,19 +13,21 @@ const MapaVetorial = dynamic(() => import("./MapaVetorial"), {
 export default function Home() {
   const [municipio, setMunicipio] = useState(null);
   return (
-    <main style={{ maxWidth: 1024, margin: "0 auto", padding: "1rem" }}>
-      <h1>Municípios da região de Limeira</h1>
-      <p>Limites municipais do IBGE · Malha Municipal 2024</p>
+    <main className={styles.pagina}>
+      <header className={styles.cabecalho}>
+        <h1>Municípios da região de Limeira</h1>
+        <p>Limites municipais do IBGE · Malha Municipal 2024</p>
+      </header>
       <MapaVetorial
         aoSelecionarMunicipio={setMunicipio}
         codigoSelecionado={municipio?.CD_MUN}
       />
 
-    <section aria-labelledby="titulo-atributos">
+    <section className={styles.atributos} aria-labelledby="titulo-atributos">
       <h2 id="titulo-atributos">Tabela de atributos</h2>
     
       {municipio ? (
-        <table aria-labelledby="titulo-atributos">
+        <table className={styles.tabela} aria-labelledby="titulo-atributos">
           <tbody>
             <tr>
               <th scope="row">Município</th>

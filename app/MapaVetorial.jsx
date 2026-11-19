@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { geoJSON } from "leaflet";
 import { GeoJSON, MapContainer, TileLayer } from "react-leaflet";
 import { formatarArea } from "./formatarArea";
+import styles from "./page.module.css";
 import "leaflet/dist/leaflet.css";
 
 const CAMINHO_MALHA = "/municipios-regiao-limeira.geojson";
@@ -94,7 +95,7 @@ export default function MapaVetorial({
     <MapContainer
       bounds={camada.limites}
       boundsOptions={{ padding: [24, 24] }}
-      style={{ height: "clamp(320px, 65vh, 600px)" }}
+      className={styles.mapa}
     >
       <TileLayer
         url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
