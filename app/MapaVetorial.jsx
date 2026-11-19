@@ -13,6 +13,29 @@ const ESTILO_MUNICIPIOS = {
   fillOpacity: 0.2,
 };
 
+const FORMATADOR_AREA = new Intl.NumberFormat("pt-BR", {
+  minimumFractionDigits: 3,
+  maximumFractionDigits: 3,
+});
+
+function vincularPopupMunicipio(feicao, camadaMunicipio) {
+  const { NM_MUN, CD_MUN, AREA_KM2 } = feicao.properties;
+
+  const conteudo = document.createElement("div");
+
+  const nome = document.createElement("strong");
+  nome.textContent = NM_MUN;
+
+  const codigo = document.createElement("div");
+  codigo.textContent = `Código IBGE: ${CD_MUN}`;
+
+  const area = document.createElement("div");
+  area.textContent = `Área territorial: ${FORMATADOR_AREA.format(AREA_KM2)} km²`;
+
+  conteudo.append(nome, codigo, area);
+  camadaMunicipio.bindPopup(conteudo);
+}
+
 export default function MapaVetorial() {
   const [camada, setCamada] = useState(null);
   const [erro, setErro] = useState(null);
@@ -70,7 +93,11 @@ export default function MapaVetorial() {
         url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-      <GeoJSON data={camada.dados} style={ESTILO_MUNICIPIOS} />
+      <GeoJSON
+        data={camada.dados}
+        style={ESTILO_MUNICIPIOS}
+        onEachFeature={vincularPopupMunicipio}
+      />
     </MapContainer>
   );
 }
