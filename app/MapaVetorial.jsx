@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { geoJSON } from "leaflet";
 import { GeoJSON, MapContainer, TileLayer } from "react-leaflet";
+import { formatarArea } from "./formatarArea";
 import "leaflet/dist/leaflet.css";
 
 const CAMINHO_MALHA = "/municipios-regiao-limeira.geojson";
@@ -12,11 +13,6 @@ const ESTILO_MUNICIPIOS = {
   weight: 2,
   fillOpacity: 0.2,
 };
-
-const FORMATADOR_AREA = new Intl.NumberFormat("pt-BR", {
-  minimumFractionDigits: 3,
-  maximumFractionDigits: 3,
-});
 
 function vincularPopupMunicipio(feicao, camadaMunicipio) {
   const { NM_MUN, CD_MUN, AREA_KM2 } = feicao.properties;
@@ -30,13 +26,13 @@ function vincularPopupMunicipio(feicao, camadaMunicipio) {
   codigo.textContent = `Código IBGE: ${CD_MUN}`;
 
   const area = document.createElement("div");
-  area.textContent = `Área territorial: ${FORMATADOR_AREA.format(AREA_KM2)} km²`;
+  area.textContent = `Área territorial: ${formatarArea(AREA_KM2)}`;
 
   conteudo.append(nome, codigo, area);
   camadaMunicipio.bindPopup(conteudo);
 }
 
-export default function MapaVetorial() {
+export default function MapaVetorial({ aoSelecionarMunicipio }) {
   const [camada, setCamada] = useState(null);
   const [erro, setErro] = useState(null);
 
@@ -96,7 +92,13 @@ export default function MapaVetorial() {
       <GeoJSON
         data={camada.dados}
         style={ESTILO_MUNICIPIOS}
-        onEachFeature={vincularPopupMunicipio}
+        onEachFeature={(feicao, camadaMunicipio) => {
+          vincularPopupMunicipio(feicao, camadaMunicipio);
+
+          camadaMunicipio.on("click", () => {
+            aoSelecionarMunicipio(feicao.properties);
+          });
+        }}
       />
     </MapContainer>
   );
