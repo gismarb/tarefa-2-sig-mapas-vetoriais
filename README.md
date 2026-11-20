@@ -1,4 +1,4 @@
-# Municípios da região de Limeira
+# Aplicação de Mapas vetoriais - Exemplo aplicado nos Municípios da região de Limeira
 
 Aplicação web desenvolvida em JavaScript com Next.js e Leaflet para o **Exercício 7 da aula SIG#07** da disciplina de **Sistemas de Informações Geográficas**.
 
